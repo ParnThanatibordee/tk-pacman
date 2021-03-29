@@ -43,12 +43,43 @@ class Pacman(Sprite):
         self.next_direction = direction
 
 
+class Pacman1(Sprite):
+    def __init__(self, app, maze, r, c):
+        self.r = r
+        self.c = c
+        self.maze = maze
+
+        self.direction = DIR_STILL
+        self.next_direction = DIR_STILL
+
+        x, y = maze.piece_center(r, c)
+        super().__init__(app, 'images/pacman1.png', x, y)
+
+    def update(self):
+        if self.maze.is_at_center(self.x, self.y):
+            r, c = self.maze.xy_to_rc(self.x, self.y)
+
+            if self.maze.has_dot_at(r, c):
+                self.maze.eat_dot_at(r, c)
+
+            if self.maze.is_movable_direction(r, c, self.next_direction):
+                self.direction = self.next_direction
+            else:
+                self.direction = DIR_STILL
+
+        self.x += PACMAN_SPEED * DIR_OFFSET[self.direction][0]
+        self.y += PACMAN_SPEED * DIR_OFFSET[self.direction][1]
+
+    def set_next_direction(self, direction):
+        self.next_direction = direction
+
+
 class PacmanGame(GameApp):
     def init_game(self):
         self.maze = Maze(self, CANVAS_WIDTH, CANVAS_HEIGHT)
 
         self.pacman1 = Pacman(self, self.maze, 1, 1)
-        self.pacman2 = Pacman(self, self.maze, self.maze.get_height() - 2, self.maze.get_width() - 2)
+        self.pacman2 = Pacman1(self, self.maze, self.maze.get_height() - 2, self.maze.get_width() - 2)
 
         self.pacman1_score_text = Text(self, 'P1: 0', 100, 20)
         self.pacman2_score_text = Text(self, 'P2: 0', 600, 20)
