@@ -12,11 +12,14 @@ UPDATE_DELAY = 33
 
 PACMAN_SPEED = 5
 
+
 class Pacman(Sprite):
     def __init__(self, app, maze, r, c):
         self.r = r
         self.c = c
         self.maze = maze
+
+        self.dot_eaten_observers = []
 
         self.direction = DIR_STILL
         self.next_direction = DIR_STILL
@@ -30,6 +33,7 @@ class Pacman(Sprite):
 
             if self.maze.has_dot_at(r, c):
                 self.maze.eat_dot_at(r, c)
+                self.dot_eaten_observers[0]()
             
             if self.maze.is_movable_direction(r, c, self.next_direction):
                 self.direction = self.next_direction
@@ -56,6 +60,12 @@ class PacmanGame(GameApp):
         self.elements.append(self.pacman1)
         self.elements.append(self.pacman2)
 
+        self.pacman1_score = 0
+        self.pacman2_score = 0
+
+        self.pacman1.dot_eaten_observers.append(self.dot_eaten_by_pacman1)
+        self.pacman2.dot_eaten_observers.append(self.dot_eaten_by_pacman2)
+
     def pre_update(self):
         pass
 
@@ -80,6 +90,19 @@ class PacmanGame(GameApp):
             self.pacman2.set_next_direction(DIR_DOWN)
         elif event.char.upper() == 'L':
             self.pacman2.set_next_direction(DIR_RIGHT)
+
+    def update_scores(self):
+        self.pacman1_score_text.set_text(f'P1: {self.pacman1_score}')
+        self.pacman2_score_text.set_text(f'P2: {self.pacman2_score}')
+
+    def dot_eaten_by_pacman1(self):
+        self.pacman1_score += 1
+        self.update_scores()
+
+    def dot_eaten_by_pacman2(self):
+        self.pacman2_score += 1
+        self.update_scores()
+
 
 if __name__ == "__main__":
     root = tk.Tk()
