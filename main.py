@@ -38,13 +38,11 @@ class Pacman(Sprite):
                 self.maze.eat_dot_at(r, c)
                 for i in self.dot_eaten_observers:
                     i()
-<<<<<<< HEAD
+
 
                 self.state.random_upgrade()
 
-=======
-            
->>>>>>> f02db5e66b67b387c2c130c4889debe45b59fdfd
+
             if self.maze.is_movable_direction(r, c, self.next_direction):
                 self.direction = self.next_direction
             else:
@@ -60,33 +58,31 @@ class NormalPacmanState:
     def __init__(self, pacman):
         self.pacman = pacman
 
-<<<<<<< HEAD
     def random_upgrade(self):
         if random.random() < 0.1:
             self.pacman.state = SuperPacmanState(self.pacman)
-=======
+
         self.dot_eaten_observers = []
 
         self.direction = DIR_STILL
         self.next_direction = DIR_STILL
->>>>>>> f02db5e66b67b387c2c130c4889debe45b59fdfd
 
     def move_pacman(self):
         self.pacman.x += PACMAN_SPEED * DIR_OFFSET[self.pacman.direction][0]
         self.pacman.y += PACMAN_SPEED * DIR_OFFSET[self.pacman.direction][1]
 
 
-<<<<<<< HEAD
+
 class SuperPacmanState:
     def __init__(self, pacman):
         self.pacman = pacman
         self.counter = 0
-=======
+
             if self.maze.has_dot_at(r, c):
                 self.maze.eat_dot_at(r, c)
                 for i in self.dot_eaten_observers:
                     i()
->>>>>>> f02db5e66b67b387c2c130c4889debe45b59fdfd
+
 
     def random_upgrade(self):
         pass
