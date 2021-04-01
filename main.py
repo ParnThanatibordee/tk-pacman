@@ -33,7 +33,8 @@ class Pacman(Sprite):
 
             if self.maze.has_dot_at(r, c):
                 self.maze.eat_dot_at(r, c)
-                self.dot_eaten_observers[0]()
+                for i in self.dot_eaten_observers:
+                    i()
             
             if self.maze.is_movable_direction(r, c, self.next_direction):
                 self.direction = self.next_direction
@@ -67,7 +68,8 @@ class Pacman1(Sprite):
 
             if self.maze.has_dot_at(r, c):
                 self.maze.eat_dot_at(r, c)
-                self.dot_eaten_observers[0]()
+                for i in self.dot_eaten_observers:
+                    i()
 
             if self.maze.is_movable_direction(r, c, self.next_direction):
                 self.direction = self.next_direction
